@@ -1,0 +1,24 @@
+<div *ngIf=!foundPossibilities>
+  <form #myForm="ngForm">
+    <div class="form-group">
+      <label for="textToDecrypt">Text To Decrypt</label>
+      <textarea id="textToDecrypt" cols="300" rows="12" required ngModel name="textToDecrypt" #textToDecrypt="ngModel" class="form-control"></textarea>
+      <div class="alert alert-danger" *ngIf="textToDecrypt.touched && !textToDecrypt.valid">Please Enter text to encrypt</div>
+    </div>
+    <div class="form-group">
+      <label for="keyLength">Key Length</label>
+      <select required id="keyLength" ngModel name="selectedKeyLength" #selectedKeyLength="ngModel" class="custom-select">
+        <option *ngFor="let keyLength of keyLengthOptions" [value]="keyLength"> {{ keyLength }}</option>
+      </select>
+      <div class="alert alert-danger" *ngIf="selectedKeyLength.touched && !selectedKeyLength.valid">Please choose key length</div>
+
+    </div>
+    <button class="btn btn-default" [disabled]="myForm.form.invalid" (click)="run(textToDecrypt.value, selectedKeyLength.value)">Run</button>
+  </form>
+</div>
+<div *ngIf="foundPossibilities">
+    <ol>
+        <li *ngFor="let item of decrypted">Possible key: {{item.key}}, Decrypted Text: {{ item.possibleDecrypedText}}</li>
+      </ol>
+    <button class="btn btn-cancel"  (click)="clear()">Clear</button>
+</div>
